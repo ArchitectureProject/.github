@@ -1,4 +1,5 @@
 It is preconised to see this doc on our postman workspace for a better links to requests.
+Group SE2-04 : Hugo MOREAU - Anthony PABOEUF - Jules VANIN - Thibault HENRION
 
 The following documentation concerns the architecture project given in EFREI's 2024 software architecture course given for M2 the Software Engineering major.
 
