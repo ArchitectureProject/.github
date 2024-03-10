@@ -1,3 +1,5 @@
+It is preconised to see this doc on our postman workspace for a better links to requests.
+
 The following documentation concerns the architecture project given in EFREI's 2024 software architecture course given for M2 the Software Engineering major.
 
 **The goal of this service** is to manage the payment system for a bowling company having multiple bowling parks all across the country.  
