@@ -35,6 +35,9 @@ Git : [https://github.com/ArchitectureProject/SessionMicroservice](https://githu
 
 The session microservice was made using C# and PostgreSQL. It aims to **manage the sessions in each bowling park alley**. A session is a "tab" at a given time in a given bowling alley of a given bowling park. This is **where the orders and the total amount of the bill are linked to the QRCode.** It also keeps track of a potential occuring payment for this session, **ensuring that no others payments are launched while another one is processing**. From it you can **order**, **pay in three different manners**, get the **currents session's information** and **close the current session** if everything have been paid. It also **notify every users in the session when a customer pay any amount** using web sockets.
 
+> Websockets are done using Microsoft's technology : SignalR in ASP .NET. This powerful library can adapt to the client's capabilities by using different real-time transports, such as Server Sent Events, Forever Frame, Long polling or Websockets mentioned above. 
+  
+
 - Order Microservice
     
 
@@ -100,7 +103,7 @@ _/!\\ You will receive a token for each login, please change the token values ac
 
 [Create bowling park](https://go.postman.co/workspace/3c356e23-0f1e-42ba-8a57-ebc67fcf1d4e/documentation/10636365-53830453-a9c1-4ecb-abd8-3b5ce86f517d?entity=request-b48079cf-d9ae-475b-aab9-b706e559446b)
 
-**Once the bowling park is created, you must create it's catalog**, please use the bowlingPark id of the on eyou just in the last part of the URL of the request.
+**Once the bowling park is created, you must create its catalog**, please use the bowlingPark id of the on eyou just in the last part of the URL of the request.
 
 [Create catalog](https://go.postman.co/workspace/3c356e23-0f1e-42ba-8a57-ebc67fcf1d4e/documentation/10636365-53830453-a9c1-4ecb-abd8-3b5ce86f517d?entity=request-0be5504c-c8bd-4be5-9a7b-e5660b504184)
 
@@ -179,11 +182,22 @@ Please use the token of a manager of an existing bowling park (a bowling park ha
 
 [Get Order By Bowling Park Manager](https://go.postman.co/workspace/3c356e23-0f1e-42ba-8a57-ebc67fcf1d4e/documentation/10636365-53830453-a9c1-4ecb-abd8-3b5ce86f517d?entity=request-44e3736c-a1ae-46ec-b060-a23e751e2f01)
 
+# Payment concurrency
+
+Payment concurrency is managed in the session microservice via a flag (ActuallyProcessingPayment) which is updated at the start of a payment called by the customer and is released again after the end of the payment microservice validation process (whether it fails or not).
+
 # About web socket notifications
 
 You can test notifications and web sockets in the other postman collection of this workspace (called WebSockets) as HTTP requests and Web Sockets connections can't be in the same collection.
 
 [WebSockets collection](https://blue-spaceship-107508.postman.co/workspace/Architecture-Project~3c356e23-0f1e-42ba-8a57-ebc67fcf1d4e/collection/65eca98e576521afcbda8a51?action=share&creator=10636365&active-environment=10636365-fcaf7d07-7ccf-43ea-a928-0d330fa24219)
+
+> In the postman example, two messages are sent to the server in order to receive notifications corresponding to the correct session, the first to open the connection to the server and the second to specify which qrCode (session) we wish to connect to. 
+  
+
+This is an example of using the notification server part of the session microservice.
+
+Connecting to the server and listening to the notifications sent by the latter can be done via WebSocket directly, but Microsoft recommends using the **SignalR** library directly in the corresponding language, as it allows you to adapt the transport layer directly to the capabilities of the client/server (if WebSocket is not available, for example).
 
 # With minikube for scalability
 
